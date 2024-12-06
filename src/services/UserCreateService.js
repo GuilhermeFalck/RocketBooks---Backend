@@ -1,12 +1,16 @@
-const { hash, compare } = require("bcryptjs");
+const { hash } = require("bcryptjs");
 const AppError = require("../utils/AppError");
 
 class UserCreateService {
   constructor(userRepository) {
     this.userRepository = userRepository;
+    console.log("UserRepository in Constructor:", userRepository); // Verifica o repositório
   }
+
   async execute({ name, email, password }) {
-    const checkUserExists = await this.userRepository.FindByEmail(email);
+    console.log("Methods in UserRepository:", Object.keys(this.userRepository)); // Lista métodos disponíveis
+
+    const checkUserExists = await this.userRepository.findByEmail(email);
 
     if (checkUserExists) {
       throw new AppError("Este e-mail já está em uso.");
@@ -14,7 +18,13 @@ class UserCreateService {
 
     const hashedPassword = await hash(password, 8);
 
-    await this.userRepository.create({ name, email, password: hashedPassword });
+    const userCreated = await this.userRepository.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+
+    return userCreated;
   }
 }
 
