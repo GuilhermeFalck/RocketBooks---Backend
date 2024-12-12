@@ -6,7 +6,7 @@
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "dev": "nodemon ./src/server.js",
     "migrate": "npx knex migrate:latest",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "author": "Guilherme Falck do Carmo",
   "license": "ISC",
